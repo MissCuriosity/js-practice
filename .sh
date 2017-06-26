@@ -1,3 +1,3 @@
 git add .
-git commit -m “update”
+git commit -m 'modify sh'
 git push origin master
