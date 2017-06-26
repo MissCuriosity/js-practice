@@ -55,7 +55,7 @@
 
     funcDiv.addEventListener('click', function (event) {
         var target = event.target;
-        var currentInput = target.innerHTML;
+        var currentInput = target.innerText;
         // number = number || 0;
 
         if (currentInput === '←') {  //撤回,等于0或已经点击了运算符时不撤回
