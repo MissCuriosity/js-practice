@@ -56,16 +56,17 @@
     funcDiv.addEventListener('click', function (event) {
         var target = event.target;
         var currentInput = target.innerHTML;
-        number = number || 0;        
+        // number = number || 0;
 
         if (currentInput === '←') {  //撤回,等于0或已经点击了运算符时不撤回
-            if ( number.length > 0 ) {
-                number.substring(0, number.length - 1);
-                return;
+            var reg = new RegExp(/^(\*|\+|\/|\-)/);
+            if ( !reg.test(currentInput) ) {
+                detail = cancel(detail);
+                number = cancel(number);
             }
-            number = 0;
+            renderResult(number);
         } else if (currentInput === 'CE') {   //清空
-             clean();
+            clean();
             renderDetail(detail);
             renderResult(number);
         } else if (Number(currentInput)) {   //输入数字
@@ -73,13 +74,16 @@
                 number = '';
             }
             number += currentInput;
-            detail += currentInput;            
-            renderDetail(detail);
+            detail += currentInput;
             renderResult(number);            
         } else if (currentInput === '.') {   //输入小数，如果已有.则不再有.
-            number += currentInput;
-        } else if (currentInput === '=') {
-            //判断detail上一位是不是+ - * /，如果是得话去掉最后一位
+            if ( number === null || number === '' || number.indexOf('.') === -1 ) {
+                number = number || 0;
+                number += currentInput;
+                detail += currentInput;
+            }
+            renderResult(number);
+        } else if (currentInput === '=') {//判断detail上一位是不是+ - * /，如果是得话去掉最后一位
             var reg = new RegExp(/^(\*|\+|\/|\-)/);
             if ( reg.test(currentInput) ) {
                 detail = detail.substring(0, detail.length - 1);
@@ -108,9 +112,21 @@
             renderDetail(detail);
             renderResult(showResult);
             number = 0;
-            
         }
     });
+
+    function cancel(value, startIndex, endIndex) {
+        var result = null;
+        if ( value.length <= 0 || value == 0 ) {
+            return '';
+        }
+        if ( value.length > 0 ) {
+            startIndex = startIndex || 0;
+            endIndex = endIndex || value.length - 1;
+            result = value.substring(startIndex, endIndex);
+        }
+        return result;
+    }
 
     function clean() {
         detail = '';
