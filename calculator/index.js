@@ -9,7 +9,7 @@
 "use strict";
 
 (function () {
-    var funcList = ['←', 'CE', '/', 'x', '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '=', '0', '.'];
+    var funcList = ['←', 'CE', '/', '*', '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '=', '0', '.'];
     var funcDiv = document.querySelector('.func');
 
     var detail = '';    //detail
@@ -85,7 +85,8 @@
             renderResult(number);
         } else if (currentInput === '=') {//判断detail上一位是不是+ - * /，如果是得话去掉最后一位
             var reg = new RegExp(/^(\*|\+|\/|\-)/);
-            if ( reg.test(currentInput) ) {
+            var lastString = detail.charAt(detail.length - 1);
+            if ( reg.test(lastString) ) {
                 detail = detail.substring(0, detail.length - 1);
             }
             operatorList.push({
